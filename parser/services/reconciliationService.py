@@ -127,10 +127,15 @@ class ReconciliationService:
                     break
         return df.rename(columns=rename_map)
     
-    def _apply_semantic_column_mapping(self, df):
+    def _apply_semantic_column_mapping(self, df, config=None):
         """
         Apply semantic/NLP mapping only to columns that were not
         recognized by deterministic header aliases.
+
+        config (optional) supplies this file's deterministic
+        alias lists, which are forwarded to the mapper so the
+        fuzzy name pre-pass has the same vocabulary the alias
+        layer uses.
 
         Returns:
             normalized_df, recognition_report
@@ -155,9 +160,19 @@ class ReconciliationService:
             if column in canonical_fields
         }
 
+        alias_map = None
+        if config:
+            header_mapping = config.get("headerMapping")
+            if header_mapping:
+                alias_map = {
+                    standard: list(aliases)
+                    for standard, aliases in header_mapping.items()
+                }
+
         result = map_unknown_columns(
             df,
             known_columns,
+            alias_map,
         )
 
         semantic_mapping = result["mapping"]
@@ -338,7 +353,7 @@ class ReconciliationService:
     @staticmethod
     def _clean_amount(series):
         cleaned = (
-            series.astype(str)
+            series.fillna("").astype(str)
             .str.strip()
             .str.replace("₹", "", regex=False)
             .str.replace("Rs.", "", regex=False)
@@ -346,11 +361,30 @@ class ReconciliationService:
             .str.replace(",", "", regex=False)
         )
 
-        is_negative_paren = cleaned.str.startswith("(") & cleaned.str.endswith(")")
-        cleaned = (
-            cleaned.str.replace("(", "", regex=False)
-            .str.replace(")", "", regex=False)
+        cleaned = cleaned.replace({
+            "": None,
+            "nan": None,
+            "NaN": None,
+            "None": None,
+            "<NA>": None,
+        })
+
+        is_negative_paren = (
+            cleaned.fillna("")
+            .str.startswith("(")
+            .fillna(False)
+            & cleaned.fillna("")
+            .str.endswith(")")
+            .fillna(False)
         )
+        cleaned = (
+            cleaned.fillna("")
+            .str.replace("(", "", regex=False)
+            .fillna("")
+            .str.replace(")", "", regex=False)
+            .fillna("")
+        )
+        cleaned = cleaned.where(is_negative_paren, cleaned.str.replace("-", "", regex=False))
 
         numeric = pd.to_numeric(cleaned, errors="coerce")
         numeric = numeric.where(~is_negative_paren, -numeric)
@@ -388,7 +422,8 @@ class ReconciliationService:
         # -----------------------------------------
 
         cleaned = (
-            series.astype(str)
+            series.fillna("")
+            .astype(str)
             .str.strip()
             .replace({
                 "": pd.NA,
@@ -408,7 +443,9 @@ class ReconciliationService:
 
         if (
             len(non_null) > 0
-            and non_null.str.fullmatch(r"\d+(\.\d+)?").all()
+            and non_null.astype(str)
+            .str.fullmatch(r"\d+(\.\d+)?")
+            .all()
         ):
             return (
                 pd.to_datetime(
@@ -582,7 +619,8 @@ class ReconciliationService:
         # ---------------------------------------
 
         cleaned = (
-            series.astype(str)
+            series.fillna("")
+            .astype(str)
             .str.strip()
             .replace({
                 "": None,
@@ -720,18 +758,29 @@ class ReconciliationService:
         ).dt.normalize()
 
     @staticmethod
+    def _clean_ref_raw(series):
+        cleaned = series.fillna("").astype(str)
+        cleaned = cleaned.str.strip().str.upper()
+        cleaned = cleaned.replace({"NAN": "", "NONE": "", "<NA>": ""})
+        cleaned = cleaned.str.replace(r"[\s\-/]", "", regex=True)
+        return cleaned
+
+    @staticmethod
     def _clean_reference(series):
-        cleaned = series.astype(str).str.strip().str.upper()
+        cleaned = series.fillna("").astype(str)
+        cleaned = cleaned.str.strip().str.upper()
         cleaned = cleaned.replace({"NAN": "", "NONE": "", "<NA>": ""})
         cleaned = cleaned.str.replace(r"[\s\-/]", "", regex=True)
         return cleaned
 
     @classmethod
     def _clean_type(cls, series):
-        cleaned = series.astype(str).str.strip().str.upper()
-        return cleaned.map(
+        cleaned = series.fillna("").astype(str)
+        cleaned = cleaned.str.strip().str.upper()
+        cleaned = cleaned.map(
             lambda v: cls.TYPE_ALIASES.get(v, v if v not in ("NAN", "NONE") else None)
         )
+        return cleaned
 
     def _resolve_amount_type(self, df):
         """
@@ -785,7 +834,7 @@ class ReconciliationService:
 
         df = self._normalize_headers(df, config)
 
-        df, semantic_report = self._apply_semantic_column_mapping(df)
+        df, semantic_report = self._apply_semantic_column_mapping(df, config)
 
         self._validate_columns(
             df,
@@ -813,8 +862,10 @@ class ReconciliationService:
         df["transactionType"] = ttype
 
         if "description" in df.columns:
-            df["description"] = df["description"].astype(str).str.strip()
-            df["description"] = df["description"].replace({"nan": ""})
+            text_series = df["description"]
+            filled = text_series.fillna("").astype(str)
+            filled = filled.str.strip()
+            df["description"] = filled
         else:
             df["description"] = ""
 
