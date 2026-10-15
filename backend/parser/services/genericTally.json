@@ -1,0 +1,79 @@
+{
+    "parserName": "Generic Tally Parser",
+    "supportedExtensions": [
+        ".xlsx",
+        ".xls",
+        ".csv"
+    ],
+    "requiredHeaders": {
+        "critical": [
+            "date"
+        ],
+        "recommended": [
+            "reference",
+            "debit",
+            "credit",
+            "amount",
+            "transactionType"
+        ],
+        "optional": [
+            "description",
+            "balance"
+        ]
+    },
+    "optionalColumns": [
+        "voucher",
+        "reference",
+        "debit",
+        "credit"
+    ],
+    "headerMapping": {
+        "date": [
+            "date",
+            "voucher date"
+        ],
+        "voucher": [
+            "voucher no",
+            "voucher number",
+            "voucher"
+        ],
+        "ledger": [
+            "ledger",
+            "ledger name",
+            "account"
+        ],
+        "reference": [
+            "reference",
+            "utr",
+            "transaction id"
+        ],
+        "debit": [
+            "debit",
+            "debit amount"
+        ],
+        "credit": [
+            "credit",
+            "credit amount"
+        ],
+        "transactionType": [
+            "transactiontype",
+            "transaction type",
+            "type",
+            "dr/cr",
+            "drcr",
+            "dc"
+        ],
+        "amount": [
+            "amount",
+            "transaction amount",
+            "txn amount",
+            "amt",
+            "value"
+        ],
+        "description": [
+            "particulars",
+            "remarks",
+            "description"
+        ]
+    }
+}

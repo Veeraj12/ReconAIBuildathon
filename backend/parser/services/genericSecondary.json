@@ -1,0 +1,113 @@
+{
+    "parserName": "Generic Secondary Source Parser",
+    "supportedExtensions": [
+        ".xlsx",
+        ".xls",
+        ".csv"
+    ],
+    "requiredHeaders": {
+        "critical": [
+            "date"
+        ],
+        "recommended": [
+            "reference",
+            "debit",
+            "credit",
+            "amount",
+            "transactionType"
+        ],
+        "optional": [
+            "description",
+            "voucher",
+            "ledger",
+            "balance"
+        ]
+    },
+    "optionalColumns": [
+        "voucher",
+        "reference",
+        "debit",
+        "credit",
+        "balance"
+    ],
+    "headerMapping": {
+        "date": [
+            "date",
+            "transaction date",
+            "txn date",
+            "value date",
+            "voucher date",
+            "settlement date",
+            "payout date"
+        ],
+        "description": [
+            "description",
+            "narration",
+            "remarks",
+            "particulars",
+            "details"
+        ],
+        "voucher": [
+            "voucher no",
+            "voucher number",
+            "voucher"
+        ],
+        "ledger": [
+            "ledger",
+            "ledger name",
+            "account"
+        ],
+        "reference": [
+            "reference",
+            "utr",
+            "rrn",
+            "transaction id",
+            "txn id",
+            "cheque no",
+            "cheque number",
+            "settlement id",
+            "payout id",
+            "order id",
+            "payment id"
+        ],
+        "debit": [
+            "debit",
+            "debit amount",
+            "withdrawal",
+            "withdraw",
+            "dr"
+        ],
+        "credit": [
+            "credit",
+            "credit amount",
+            "deposit",
+            "cr"
+        ],
+        "transactionType": [
+            "transactiontype",
+            "transaction type",
+            "type",
+            "dr/cr",
+            "drcr",
+            "debit/credit",
+            "dc",
+            "txn status",
+            "status"
+        ],
+        "amount": [
+            "amount",
+            "transaction amount",
+            "txn amount",
+            "amt",
+            "value",
+            "net amount",
+            "settlement amount",
+            "payout amount"
+        ],
+        "balance": [
+            "balance",
+            "closing balance",
+            "available balance"
+        ]
+    }
+}
