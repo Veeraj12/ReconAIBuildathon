@@ -7,7 +7,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { ArrowLeftRight } from "lucide-react";
 import type { ExceptionPair } from "../types";
 
-function TypePill({ type }: { type?: string }) {
+function TypePill({ type }: { type?: string | null }) {
   if (!type) return <span className="text-text-secondary">-</span>;
   return (
     <StatusBadge tone={type === "Debit" ? "danger" : "success"}>{type}</StatusBadge>
