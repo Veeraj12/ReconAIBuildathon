@@ -33,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-znpj3fqn_3*6etvm8f5^qcku*71zm!x)=go2m$8thomi5)rj-o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "reconaibuildathon.onrender.com",
@@ -90,11 +90,10 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "AUTH_COOKIE": "access_token",
     "AUTH_COOKIE_REFRESH": "refresh_token",
-    "AUTH_COOKIE_SECURE": not DEBUG,   # True in production (HTTPS only), False for local dev over HTTP
+    "AUTH_COOKIE_SECURE": not DEBUG,
     "AUTH_COOKIE_HTTP_ONLY": True,
-    "AUTH_COOKIE_SAMESITE": "Lax",
+    "AUTH_COOKIE_SAMESITE": "None" if not DEBUG else "Lax",
 }
-
 
 ROOT_URLCONF = 'config.urls'
 
