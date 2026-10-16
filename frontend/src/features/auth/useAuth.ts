@@ -35,8 +35,14 @@ export function useAuth(): UseAuthResult {
       setIsLoading(true);
       try {
         const res = await authApi.login({ username, password });
-        setUser(res.user);
-        router.push("/reconcile");
+        // setUser(res.user);
+        // router.push("/reconcile");
+        console.log("LOGIN SUCCESS", res);
+
+      setUser(res.user);
+      console.log("NAVIGATING TO /reconcile");
+
+      router.push("/reconcile");
       } catch (err) {
         setError(err instanceof ApiError ? err.message : "Login failed.");
       } finally {
