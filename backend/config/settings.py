@@ -36,11 +36,11 @@ SECRET_KEY = 'django-insecure-znpj3fqn_3*6etvm8f5^qcku*71zm!x)=go2m$8thomi5)rj-o
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "https://reconaibuildathon.onrender.com",'.onrender.com',
-    'localhost',
-    '127.0.0.1',
+    "reconaibuildathon.onrender.com",
+    ".onrender.com",
+    "localhost",
+    "127.0.0.1",
 ]
-
 
 # Application definition
 
@@ -55,10 +55,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'parser',
 ]
-
 MIDDLEWARE = [
-     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -70,11 +69,11 @@ MIDDLEWARE = [
 from datetime import timedelta
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",   # Next.js dev server
-    # "https://reconaibuildathon.onrender.com",
-        "https://reconai-hazel.vercel.app"
-    # add your production Next.js origin here once deployed
+    "http://localhost:3000",
+    "https://reconai-hazel.vercel.app",
+    "https://reconai-87o7fckff-veerajhome11-4043s-projects.vercel.app",
 ]
+
 CORS_ALLOW_CREDENTIALS = True   # required — without this, cookies won't cross the origin boundary
 
 REST_FRAMEWORK = {
