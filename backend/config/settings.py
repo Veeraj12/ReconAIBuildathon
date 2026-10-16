@@ -71,8 +71,8 @@ from datetime import timedelta
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",   # Next.js dev server
-    "https://reconaibuildathon.onrender.com",'.onrender.com',
-    'reconai-rmxvnzajg-veerajhome11-4043s-projects.vercel.app'
+    # "https://reconaibuildathon.onrender.com",
+        "https://reconai-hazel.vercel.app"
     # add your production Next.js origin here once deployed
 ]
 CORS_ALLOW_CREDENTIALS = True   # required — without this, cookies won't cross the origin boundary
