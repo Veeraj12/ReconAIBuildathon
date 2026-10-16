@@ -248,6 +248,11 @@ export function AuthCard({ initialMode = "signin" }: AuthCardProps) {
                     </button>
                   </div>
                 </div>
+                 <div className="flex flex-col items-end gap-1">
+                  <label className="flex cursor-pointer select-none items-center gap-2 text-[13px] text-slate-600">
+                    Use Username - "TestAdmin" & Password - "Admin@123" for demo
+                  </label>
+                  </div>
 
                 <div className="flex items-center justify-between">
                   <label className="flex cursor-pointer select-none items-center gap-2 text-[13px] text-slate-600">
@@ -259,11 +264,6 @@ export function AuthCard({ initialMode = "signin" }: AuthCardProps) {
                     />
                     Remember me
                   </label>
-                  <div className="flex flex-col items-end gap-1">
-                  <label className="flex cursor-pointer select-none items-center gap-2 text-[13px] text-slate-600">
-                    Use Username - "TestAdmin" & Password - "Admin@123" for demo
-                  </label>
-                  </div>
                   <button
                     type="button"
                     onClick={() => setResetHint((v) => !v)}
