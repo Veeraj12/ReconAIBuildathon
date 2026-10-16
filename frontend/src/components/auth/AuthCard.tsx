@@ -259,6 +259,9 @@ export function AuthCard({ initialMode = "signin" }: AuthCardProps) {
                     />
                     Remember me
                   </label>
+                  <label className="flex cursor-pointer select-none items-center gap-2 text-[13px] text-slate-600">
+                    Use Username - "TestAdmin" & Password - "Admin@123" for demo
+                  </label>
                   <button
                     type="button"
                     onClick={() => setResetHint((v) => !v)}
