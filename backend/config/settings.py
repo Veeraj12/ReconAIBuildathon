@@ -35,7 +35,11 @@ SECRET_KEY = 'django-insecure-znpj3fqn_3*6etvm8f5^qcku*71zm!x)=go2m$8thomi5)rj-o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "https://reconaibuildathon.onrender.com",'.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition

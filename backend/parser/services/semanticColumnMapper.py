@@ -5,7 +5,6 @@ import warnings
 from functools import lru_cache
 
 import pandas as pd
-from sentence_transformers import SentenceTransformer
 
 
 # ============================================================
@@ -225,6 +224,11 @@ _WHITESPACE_RUN = re.compile(r"\s+")
 _CAMEL_BOUNDARY = re.compile(r"(?<=[a-z])(?=[A-Z])")
 _SEPARATOR_RUN = re.compile(r"[_\-]+")
 _PURE_DIGITS = re.compile(r"\d+")
+
+
+def map_unknown_columns(*args, **kwargs):
+    # Move the import inside the function so it loads on demand
+    from sentence_transformers import SentenceTransformer
 
 
 def _normalize_header_key(text):
