@@ -303,19 +303,6 @@ export function AppSidebar() {
 
       {/* 4. FOOTER */}
       <div className="mt-auto px-3 pb-4 flex flex-col gap-3">
-        {/* Local Processing Info Card */}
-        {!collapsed && (
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-            <ShieldCheck size={16} className="text-teal-500 mt-0.5 shrink-0" />
-            <div className="flex flex-col">
-              <span className="text-[11px] font-medium text-neutral-300">Local Processing</span>
-              <span className="text-[10px] text-neutral-500 leading-relaxed mt-0.5">
-                Your files never leave this device.
-              </span>
-            </div>
-          </div>
-        )}
-
         {/* User Profile Card */}
         {user && (
           <div 
