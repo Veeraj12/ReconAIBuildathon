@@ -3,7 +3,6 @@
 import { Layers } from "lucide-react";
 import { usePagination } from "@/hooks/usePagination";
 import { Pager } from "@/components/ui/Pager";
-import { StatusBadge } from "@/components/ui/StatusBadge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type { GroupedMatch } from "../types";
 

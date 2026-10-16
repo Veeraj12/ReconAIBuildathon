@@ -5,7 +5,7 @@ import { Sparkles, Layers, TrendingUp, CircleOff, Loader2, RotateCw, Search } fr
 import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useReconciliationContext } from "@/features/reconciliation/ReconciliationProvider";
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuthContext } from "@/features/auth/AuthProvider";
 import { useAnalysisContext } from "../AnalysisProvider";
 import { buildExceptionResolver } from "../resolveExceptions";
 import type { ResolvedEntry } from "../resolveExceptions";
@@ -22,7 +22,7 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
 
 export function PatternsPanel() {
   const { data } = useReconciliationContext();
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const {
     result, isAnalyzing, analyzeError, hasAnalyzed, analyze, explanations, explainPattern,
     causeFeedback, submitCauseFeedback,

@@ -77,7 +77,7 @@ function BucketRow({
           {bucket.count > samples.length && (
             <p className="px-3 py-2 text-[10px] text-text-secondary">
               Showing {samples.length} of {bucket.count.toLocaleString()} — the full set is available in each
-              source's individual reconciliation below.
+              source&apos;s individual reconciliation below.
             </p>
           )}
         </div>

@@ -35,15 +35,15 @@ export function useAuth(): UseAuthResult {
       setIsLoading(true);
       try {
         const res = await authApi.login({ username, password });
-        // setUser(res.user);
-        // router.push("/reconcile");
-        console.log("LOGIN SUCCESS", res);
-
-      setUser(res.user);
-      console.log("NAVIGATING TO /reconcile");
-
-      // router.push("/reconcile");
-      window.location.href = "/reconcile";
+        // The JWTs ride in httpOnly Set-Cookie headers on this response
+        // (accepted by the browser for the backend's own domain), so
+        // there is nothing else to persist — the user object is all the
+        // client needs. The shared AuthProvider carries this user
+        // across the client-side navigation to the (app) layout, whose
+        // guard reads it instead of re-authenticating.
+        setUser(res.user);
+        router.push("/reconcile");
+        return;
       } catch (err) {
         setError(err instanceof ApiError ? err.message : "Login failed.");
       } finally {

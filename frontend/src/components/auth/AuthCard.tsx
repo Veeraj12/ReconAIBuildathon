@@ -14,7 +14,7 @@ import {
   ShieldCheck,
   User,
 } from "lucide-react";
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuthContext } from "@/features/auth/AuthProvider";
 
 type Mode = "signin" | "register";
 
@@ -80,7 +80,7 @@ function MicrosoftIcon({ className }: { className?: string }) {
 }
 
 export function AuthCard({ initialMode = "signin" }: AuthCardProps) {
-  const { login, register, error } = useAuth();
+  const { login, register, error } = useAuthContext();
   const [mode, setMode] = useState<Mode>(initialMode);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
@@ -139,7 +139,15 @@ export function AuthCard({ initialMode = "signin" }: AuthCardProps) {
     }
 
     setIsSubmitting(true);
-    await register(fullName.trim(), workEmail.trim(), password);
+    // The username IS the work email — not the full name. The backend
+    // login field is "Work Email or Username", and Django's built-in
+    // username rules (uniqueness + the UnicodeUsernameValidator charset)
+    // are written for email-shaped identifiers; registering with a
+    // space-containing full name instead created accounts like "Jordan
+    // Miller" that collide across users (uniqueness violation → 500)
+    // and could never be entered as an email. The full name is not
+    // persisted — UserProfile has no display-name field today.
+    await register(workEmail.trim(), workEmail.trim(), password);
     setIsSubmitting(false);
   }
 
@@ -250,7 +258,7 @@ export function AuthCard({ initialMode = "signin" }: AuthCardProps) {
                 </div>
                  <div className="flex flex-col items-end gap-1">
                   <label className="flex cursor-pointer select-none items-center gap-2 text-[13px] text-slate-600">
-                    Use Username - "TestAdmin" & Password - "Admin@123" for demo
+                    {`Use Username - "TestAdmin" & Password - "Admin@123" for demo`}
                   </label>
                   </div>
 

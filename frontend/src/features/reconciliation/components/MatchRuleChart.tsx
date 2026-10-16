@@ -18,19 +18,28 @@ const RULE_LABELS: Record<string, string> = {
   AMOUNT_DATE: "Amount / Date",
 };
 
+// Stable module-level key list — the axis keys never change, so the
+// memo below can key on `stats.ruleCounts` alone without pulling the
+// per-render array literals into its dependency semantics.
+const RULE_KEYS = Object.keys(RULE_LABELS);
+
 export function MatchRuleChart({ stats }: { stats: DerivedStatistics }) {
   const chartRef = useRef<ChartJS<"bar">>(null);
-  const ruleKeys = Object.keys(RULE_LABELS);
+  const ruleKeys = RULE_KEYS;
   const values = ruleKeys.map((key) => stats.ruleCounts[key as keyof typeof stats.ruleCounts] ?? 0);
   const total = values.reduce((a, b) => a + b, 0) || 1;
+  const { ruleCounts } = stats;
 
+  // Same memo intent as before — recompute the chart payload only when
+  // the underlying counts change — but with a dependency list the hook
+  // linter can statically verify (previously `[values.join(",")]`).
   const data = useMemo(
     () => ({
-      labels: ruleKeys.map((key) => RULE_LABELS[key]),
+      labels: RULE_KEYS.map((key) => RULE_LABELS[key]),
       datasets: [
         {
           label: "Matched Transactions",
-          data: values,
+          data: RULE_KEYS.map((key) => ruleCounts[key as keyof typeof ruleCounts] ?? 0),
           backgroundColor: "#0d9488",
           hoverBackgroundColor: "#0f766e",
           borderRadius: 8,
@@ -38,9 +47,8 @@ export function MatchRuleChart({ stats }: { stats: DerivedStatistics }) {
           maxBarThickness: 56,
         },
       ],
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }),
-    [values.join(",")]
+    [ruleCounts]
   );
 
   return (

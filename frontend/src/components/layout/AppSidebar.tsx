@@ -4,7 +4,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuthContext } from "@/features/auth/AuthProvider";
 import { useReconciliationContext } from "@/features/reconciliation/ReconciliationProvider";
 import { useAnalysisContext } from "@/features/analysis/AnalysisProvider";
 import { UploadForm } from "@/features/reconciliation/components/UploadForm";
@@ -114,7 +114,7 @@ const RESULT_TABS = [
 
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useLocalStorage("reconai:sidebarCollapsed", false);
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthContext();
   const { data, isLoading, upload, reset } = useReconciliationContext();
   const { result: analysisResult } = useAnalysisContext();
   const pathname = usePathname();

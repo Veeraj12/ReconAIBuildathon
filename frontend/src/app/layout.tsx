@@ -4,6 +4,7 @@ import {
   Fraunces,
   IBM_Plex_Mono,
 } from "next/font/google";
+import { AuthProvider } from "@/features/auth/AuthProvider";
 
 import "./globals.css";
 
@@ -34,7 +35,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       className={`${inter.variable} ${fraunces.variable} ${mono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }

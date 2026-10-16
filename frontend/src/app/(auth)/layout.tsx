@@ -1,4 +1,25 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/features/auth/AuthProvider";
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
+  const { user, isLoading } = useAuthContext();
+  const router = useRouter();
+
+  // Restores what the deleted proxy.ts used to try to do: a user who
+  // is already authenticated has no business on /login or /register.
+  // The context provider has the real session state (from /auth/me),
+  // unlike the middleware which could only guess from a cookie it was
+  // never able to see. Deliberately does NOT block rendering while
+  // isLoading — an anonymous visitor should see the form immediately.
+  useEffect(() => {
+    if (user && !isLoading) {
+      router.replace("/reconcile");
+    }
+  }, [user, isLoading, router]);
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-4 py-10">
       {/* Ambient radial glow */}
