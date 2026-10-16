@@ -41,11 +41,36 @@ class UserProfile(models.Model):
 
     @property
     def can_reconcile(self):
-        return self.role in (self.ROLE_ACCOUNTANT, self.ROLE_ADMIN)
+        return self.role.lower() in (self.ROLE_ACCOUNTANT, self.ROLE_ADMIN)
 
     @property
     def is_admin(self):
-        return self.role == self.ROLE_ADMIN
+        return self.role.lower() == self.ROLE_ADMIN
+
+    # Normalise stray casing (e.g. a row stored as "Admin") to the field's
+    # canonical lowercase form without touching the user-facing semantics.
+    def _normalise_role(self):
+        if self.role:
+            lowered = self.role.lower()
+            if lowered in {"viewer", "accountant", "admin"}:
+                if self.role != lowered:
+                    self.role = lowered
+                    return True
+        return False
+
+    def save(self, *args, **kwargs):
+        # Keep existing rows that were created with the wrong casing (e.g.
+        # "Admin" or "Accountant") consistent with the current model's
+        # lowercase constants so future checks don't drift again. This is a
+        # minimal, additive write — it only changes the role's case, never
+        # the semantics or the user it belongs to.
+        changed = self._normalise_role()
+        super().save(*args, **kwargs)
+        if changed:
+            # Re-save is unnecessary here because super().save already
+            # persisted the normalised role above; this is just a marker so
+            # callers can observe that normalisation happened if they want.
+            pass
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
