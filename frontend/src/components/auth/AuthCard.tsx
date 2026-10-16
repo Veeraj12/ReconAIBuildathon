@@ -45,40 +45,6 @@ const inputClass =
 const iconClass =
   "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors peer-focus:text-emerald-500";
 
-function GoogleIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <path
-        fill="#4285F4"
-        d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47a5.54 5.54 0 0 1-2.4 3.63v3h3.86c2.26-2.09 3.56-5.17 3.56-8.87Z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09A11.99 11.99 0 0 0 12 24Z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.27 14.29a7.2 7.2 0 0 1 0-4.58V6.62H1.29a12 12 0 0 0 0 10.76l3.98-3.09Z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.7 0 3.99 2.47 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75Z"
-      />
-    </svg>
-  );
-}
-
-function MicrosoftIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <path fill="#F25022" d="M11.4 11.4H2V2h9.4v9.4Z" />
-      <path fill="#7FBA00" d="M22 11.4h-9.4V2H22v9.4Z" />
-      <path fill="#00A4EF" d="M11.4 22H2v-9.4h9.4V22Z" />
-      <path fill="#FFB900" d="M22 22h-9.4v-9.4H22V22Z" />
-    </svg>
-  );
-}
-
 export function AuthCard({ initialMode = "signin" }: AuthCardProps) {
   const { login, register, error } = useAuthContext();
   const [mode, setMode] = useState<Mode>(initialMode);
@@ -438,29 +404,6 @@ export function AuthCard({ initialMode = "signin" }: AuthCardProps) {
                 </>
               )}
             </motion.button>
-
-            <div className="flex items-center gap-3 pt-1">
-              <span className="h-px flex-1 bg-slate-200" />
-              <span className="text-xs font-medium text-slate-400">Or continue with</span>
-              <span className="h-px flex-1 bg-slate-200" />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
-              >
-                <GoogleIcon className="h-4 w-4" />
-                Google
-              </button>
-              <button
-                type="button"
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
-              >
-                <MicrosoftIcon className="h-4 w-4" />
-                Microsoft
-              </button>
-            </div>
           </motion.form>
         </AnimatePresence>
 
