@@ -42,7 +42,8 @@ export function useAuth(): UseAuthResult {
       setUser(res.user);
       console.log("NAVIGATING TO /reconcile");
 
-      router.push("/reconcile");
+      // router.push("/reconcile");
+      window.location.href = "/reconcile";
       } catch (err) {
         setError(err instanceof ApiError ? err.message : "Login failed.");
       } finally {
