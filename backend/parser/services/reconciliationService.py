@@ -122,9 +122,6 @@ class ReconciliationService:
                 if key == standard.lower() or key in normalized_aliases:
                     rename_map[column] = standard
                     break
-                if standard == "date" and re.search(r"\bdate\b", key):
-                    rename_map[column] = standard
-                    break
         return df.rename(columns=rename_map)
     
     def _apply_semantic_column_mapping(self, df, config=None):
@@ -834,7 +831,23 @@ class ReconciliationService:
 
         df = self._normalize_headers(df, config)
 
-        df, semantic_report = self._apply_semantic_column_mapping(df, config)
+        print("\n========== AFTER HEADER NORMALIZATION ==========")
+        print(df.columns.tolist())
+
+        duplicates = df.columns[df.columns.duplicated(keep=False)].tolist()
+        print("Duplicate columns:", duplicates)
+
+        # df = self._apply_semantic_column_mapping(df, config)
+
+        df, semantic_report = self._apply_semantic_column_mapping(
+            df, config
+        )
+        print("\n========== AFTER SEMANTIC MAPPING ==========")
+        print(df.columns.tolist())
+
+        duplicates = df.columns[df.columns.duplicated(keep=False)].tolist()
+        print("Duplicate columns:", duplicates)
+       
 
         self._validate_columns(
             df,

@@ -54,6 +54,19 @@ CANONICAL_FIELDS = {
             "processing date",
         ],
     },
+    
+    "voucherDate": {
+        "description": (
+            "The accounting document date associated with a "
+            "voucher or accounting entry."
+        ),
+        "examples": [
+            "accounting document date",
+            "acc doc date",
+            "voucher date",
+            "document date"
+        ]
+    },
 
     "reference": {
         "description": (
