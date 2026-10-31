@@ -6,7 +6,6 @@ from functools import lru_cache
 
 import pandas as pd
 
-
 # ============================================================
 # Configuration
 # ============================================================
@@ -226,10 +225,6 @@ _SEPARATOR_RUN = re.compile(r"[_\-]+")
 _PURE_DIGITS = re.compile(r"\d+")
 
 
-def map_unknown_columns(*args, **kwargs):
-    # Move the import inside the function so it loads on demand
-    from sentence_transformers import SentenceTransformer
-
 
 def _normalize_header_key(text):
     """
@@ -261,7 +256,12 @@ def get_model():
     """
     Load the SentenceTransformer model once and reuse it.
     """
-    return SentenceTransformer(MODEL_NAME)
+    # Import lazily and dynamically so importing this service does not
+    # require sentence-transformers to be installed until embeddings are used.
+    import importlib
+
+    sentence_transformers = importlib.import_module("sentence_transformers")
+    return sentence_transformers.SentenceTransformer(MODEL_NAME)
 
 
 # ============================================================
